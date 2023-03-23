@@ -2,7 +2,7 @@ import digitalio, pwmio, time, board
 from adafruit_motor import servo
 
 boardToPins = {
-  "feathers2": {
+  "unexpectedmaker_feathers2": {
     "revServoPin": board.D6,
     "fwdServoPin": board.D5,
     "motorPin": board.D9,
