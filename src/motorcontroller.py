@@ -1,20 +1,35 @@
-import digitalio, pwmio, time
+import digitalio, pwmio, time, board
 from adafruit_motor import servo
 
-class MotorController:
-  def __init__(self, revServoPin, fwdServoPin, motorPin, capSensPin) -> None:
-    self.revServoPin = pwmio.PWMOut(revServoPin, duty_cycle=2 ** 15, frequency=50)
-    self.revServo = servo.Servo(revServoPin)
+boardToPins = {
+  "feathers2": {
+    "revServoPin": board.D6,
+    "fwdServoPin": board.D5,
+    "motorPin": board.D9,
+    "capSensPin": board.D12
+  },
+  "esp32s2feather": {
+    "revServoPin": board.D6,
+    "fwdServoPin": board.D5,
+    "motorPin": board.D9,
+    "capSensPin": board.D10
+  }
+}
 
-    self.fwdServoPin = pwmio.PWMOut(fwdServoPin, duty_cycle=2 ** 15, frequency=50)
-    self.fwdServo = servo.Servo(fwdServoPin)
+class MotorController:
+  def __init__(self, boardID) -> None:
+    self.revServoPin = pwmio.PWMOut(boardToPins[boardID]["revServoPin"], duty_cycle=2 ** 15, frequency=50)
+    self.revServo = servo.Servo(boardToPins[boardID]["revServoPin"])
+
+    self.fwdServoPin = pwmio.PWMOut(boardToPins[boardID]["fwdServoPin"], duty_cycle=2 ** 15, frequency=50)
+    self.fwdServo = servo.Servo(boardToPins[boardID]["fwdServoPin"])
     self.revServo.angle = 180
     self.fwdServo.angle = 10
 
-    self.motor = digitalio.DigitalInOut(motorPin)
+    self.motor = digitalio.DigitalInOut(boardToPins[boardID]["motorPin"])
     self.motor.direction = digitalio.Direction.OUTPUT
 
-    self.capSens = digitalio.DigitalInOut(motorPin)
+    self.capSens = digitalio.DigitalInOut(boardToPins[boardID]["capSensPin"])
     self.capSens.direction = digitalio.Direction.INPUT
     self.capSens.pull = digitalio.Pull.UP
     # Feather32 S2
