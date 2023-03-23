@@ -32,10 +32,7 @@ class MotorController:
     self.capSens = digitalio.DigitalInOut(boardToPins[boardID]["capSensPin"])
     self.capSens.direction = digitalio.Direction.INPUT
     self.capSens.pull = digitalio.Pull.UP
-    # Feather32 S2
-    # reverseServo = board.D6
-    # forwardServo = board.D5
-    # motor = board.D9
+    self.resetState()
 
   def boltBack():
     print("moving bolt back")
@@ -49,6 +46,49 @@ class MotorController:
   def motorDown():
     print("spinning motor up")
 
-  def checkCapacity():
+  def hasCapacity(self):
     """Checks for whether there is at least one shot remaining determined by the capacity sensor"""
-    return self.capSense.value
+    # Sensor is low when it detects something
+    hasCap = not self.capSense.value
+    if not hasCap:
+      print("capacity empty")
+    return hasCap
+
+  def resetState(self):
+    print("resetting state")
+    self.boltBack()
+    self.motor.value = False
+    time.sleep(0.6) # time for servos to move
+
+
+  def ShootSingleSequence(self):
+    print("shooting one")
+    if not self.hasCapacity():
+      return
+    self.boltBack()
+    self.motor.value = True
+    time.sleep(3)
+    self.boltForward()
+    time.sleep(1)
+    self.resetState()
+
+  def ShootAllSequence(self):
+    print("shooting all")
+    if not self.hasCapacity():
+      return
+    self.boltBack()
+    self.motor.value = True
+    time.sleep(2)
+
+    while self.hasCapacity():
+      time.sleep(1)
+      self.boltForward()
+      time.sleep(0.6)
+      self.boltBack()
+    self.resetState()
+
+  def FakeShootSequence(self):
+    print("fake shooting sequence")
+    self.prepareToShoot()
+    time.sleep(1) # sleep an extra second
+    self.resetState()
