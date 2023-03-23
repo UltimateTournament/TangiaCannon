@@ -17,19 +17,19 @@ boardToPins = {
 }
 
 class MotorController:
-  def __init__(self, boardID) -> None:
-    self.revServoPin = pwmio.PWMOut(boardToPins[boardID]["revServoPin"], duty_cycle=2 ** 15, frequency=50)
-    self.revServo = servo.Servo(boardToPins[boardID]["revServoPin"])
+  def __init__(self) -> None:
+    self.revServoPin = pwmio.PWMOut(boardToPins[board.board_id]["revServoPin"], duty_cycle=2 ** 15, frequency=50)
+    self.revServo = servo.Servo(boardToPins[board.board_id]["revServoPin"])
 
-    self.fwdServoPin = pwmio.PWMOut(boardToPins[boardID]["fwdServoPin"], duty_cycle=2 ** 15, frequency=50)
-    self.fwdServo = servo.Servo(boardToPins[boardID]["fwdServoPin"])
+    self.fwdServoPin = pwmio.PWMOut(boardToPins[board.board_id]["fwdServoPin"], duty_cycle=2 ** 15, frequency=50)
+    self.fwdServo = servo.Servo(boardToPins[board.board_id]["fwdServoPin"])
     self.revServo.angle = 180
     self.fwdServo.angle = 10
 
-    self.motor = digitalio.DigitalInOut(boardToPins[boardID]["motorPin"])
+    self.motor = digitalio.DigitalInOut(boardToPins[board.board_id]["motorPin"])
     self.motor.direction = digitalio.Direction.OUTPUT
 
-    self.capSens = digitalio.DigitalInOut(boardToPins[boardID]["capSensPin"])
+    self.capSens = digitalio.DigitalInOut(boardToPins[board.board_id]["capSensPin"])
     self.capSens.direction = digitalio.Direction.INPUT
     self.capSens.pull = digitalio.Pull.UP
     self.resetState()
