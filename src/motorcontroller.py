@@ -1,31 +1,34 @@
-import digitalio, pwmio, time, board
+import digitalio, pwmio, time, board, math
 from adafruit_motor import servo
 
 boardToPins = {
   "unexpectedmaker_feathers2": {
-    "revServoPin": board.D5,
-    "fwdServoPin": board.D6,
+    "rightServoPin": board.D5,
+    "leftServoPin": board.D6,
     "motorPin": board.D9,
     "capSensPin": board.D12
   },
   "esp32s2feather": {
-    "revServoPin": board.D6,
-    "fwdServoPin": board.D5,
+    "rightServoPin": board.D6,
+    "leftServoPin": board.D5,
     "motorPin": board.D9,
     "capSensPin": board.D10
   }
 }
 
+def percToDutyCycle(perc):
+  """
+  Converts a milliseconds to a duty cycle. 2.5 to 12.5 is real range
+  https://raspberrypi.stackexchange.com/questions/106858/what-is-the-proper-calculation-of-duty-cycle-range-for-the-sg90-servo
+  """
+  return math.trunc((perc/100)*(65535))
+
 class MotorController:
   def __init__(self) -> None:
     print("detected board {}".format(board.board_id))
-    self.revServoPin = pwmio.PWMOut(boardToPins[board.board_id]["revServoPin"], duty_cycle=2**15, frequency=50)
-    self.revServo = servo.Servo(self.revServoPin)
+    self.rightServoPin = pwmio.PWMOut(boardToPins[board.board_id]["rightServoPin"], duty_cycle=2**15, frequency=50)
 
-    self.fwdServoPin = pwmio.PWMOut(boardToPins[board.board_id]["fwdServoPin"], duty_cycle=2**15, frequency=50)
-    self.fwdServo = servo.Servo(self.fwdServoPin)
-    self.revServo.angle = 170
-    self.fwdServo.angle = 10
+    self.leftServoPin = pwmio.PWMOut(boardToPins[board.board_id]["leftServoPin"], duty_cycle=2**15, frequency=50)
 
     self.motor = digitalio.DigitalInOut(boardToPins[board.board_id]["motorPin"])
     self.motor.direction = digitalio.Direction.OUTPUT
@@ -35,22 +38,28 @@ class MotorController:
     self.capSens.pull = digitalio.Pull.UP
     self.resetState()
 
-  def setAngle(self, fwd, rev):
-    self.revServo.angle = rev
-    self.fwdServo.angle = fwd
+  def setDutyCycle(self, left, right):
+    print("setting duty cycle")
+    self.leftServoPin.duty_cycle = left
+    self.rightServoPin.duty_cycle = right
+
+  def setDutyPerc(self, left, right):
+    self.setDutyCycle(percToDutyCycle(left), percToDutyCycle(right))
 
   def boltBack(self):
     print("moving bolt back")
-    self.revServo.angle = 170
-    self.fwdServo.angle = 10
-    time.sleep(0.6)
+    # self.rightServo.angle = 170
+    # self.leftServo.angle = 10
+    self.setDutyPerc(3.3, 13)
+    time.sleep(0.7)
     self.turnOffServos()
 
   def boltForward(self):
     print("moving bolt forward")
-    self.revServo.angle = 0
-    self.fwdServo.angle = 180
-    time.sleep(0.6)
+    # self.rightServo.angle = 0
+    # self.leftServo.angle = 180
+    self.setDutyPerc(12.8, 2.8)
+    time.sleep(0.7)
     self.turnOffServos()
 
   def motorUp(self):
@@ -61,8 +70,7 @@ class MotorController:
 
   def turnOffServos(self):
     print("turning off servos")
-    self.revServoPin.duty_cycle = 0
-    self.fwdServoPin.duty_cycle = 0
+    self.setDutyCycle(0, 0)
 
   def hasCapacity(self):
     """Checks for whether there is at least one shot remaining determined by the capacity sensor"""
