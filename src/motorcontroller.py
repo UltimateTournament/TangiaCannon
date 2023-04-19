@@ -9,13 +9,15 @@ boardToPins = {
     "rightMotorPin": board.D15,
     "capSensPin": board.D12,
     "motorEnablePin": board.D16
+  },
+  "adafruit_feather_esp32s2": {
+    "rightServoPin": board.D5,
+    "leftServoPin": board.D6,
+    "leftMotorPin": board.D9,
+    "rightMotorPin": board.D10,
+    "capSensPin": board.D12,
+    "motorEnablePin": board.D11
   }
-  # "esp32s2feather": {
-  #   "rightServoPin": board.D6,
-  #   "leftServoPin": board.D5,
-  #   "motorPin": board.D9,
-  #   "capSensPin": board.D10
-  # }
 }
 
 def percToDutyCycle(perc):
