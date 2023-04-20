@@ -7,6 +7,10 @@ print("Data serial echo to repl on!")
 serial = usb_cdc.data
 
 while True:
+    if not serial.connected:
+        time.sleep(0.01)
+        continue
+
     # read the secondary serial line by line when there's data
     # note that this assumes that the host always sends a full line
     if serial.in_waiting > 0:
@@ -24,6 +28,9 @@ while True:
         # to transmit any command you want and parse it here
         if isinstance(data, dict):
             print("got a dict! content:", data)
+
+        serial.write(b'heyoo\n')
+        serial.flush()
 
     # this is where the rest of your code goes
     # if the code does a lot you don't need a call to sleep, but if possible
