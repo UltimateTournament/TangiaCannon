@@ -18,7 +18,14 @@ boardToPins = {
     "capSensPin": board.D12,
     "motorEnablePin": board.D11
   },
-  "raspberry_pi_pico": {}
+  "raspberry_pi_pico": {
+    "rightServoPin": board.GP21,
+    "leftServoPin": board.GP20,
+    "leftMotorPin": board.GP19,
+    "rightMotorPin": board.GP18,
+    "capSensPin": board.GP17,
+    "motorEnablePin": board.GP16
+  }
 }
 
 def percToDutyCycle(perc):
