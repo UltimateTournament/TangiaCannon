@@ -17,6 +17,14 @@ boardToPins = {
     "rightMotorPin": board.D10,
     "capSensPin": board.D12,
     "motorEnablePin": board.D11
+  },
+  "raspberry_pi_pico": {
+    "rightServoPin": board.GP21,
+    "leftServoPin": board.GP20,
+    "leftMotorPin": board.GP19,
+    "rightMotorPin": board.GP18,
+    "capSensPin": board.GP17,
+    "motorEnablePin": board.GP16
   }
 }
 
@@ -42,6 +50,12 @@ class MotorController:
     self.capSens = digitalio.DigitalInOut(boardToPins[board.board_id]["capSensPin"])
     self.capSens.direction = digitalio.Direction.INPUT
     self.capSens.pull = digitalio.Pull.UP
+
+    self.sleepSeconds = 2.4
+    self.fakeShotSeconds = 4
+    self.shootAllGapSeconds = 1
+    self.boltGraceSeconds = 0.7
+
     self.resetState()
 
   def setServoDutyCycle(self, left, right):
@@ -62,18 +76,14 @@ class MotorController:
 
   def boltBack(self):
     print("moving bolt back")
-    # self.rightServo.angle = 170
-    # self.leftServo.angle = 10
     self.setServoDutyPerc(3.3, 13)
-    time.sleep(0.7)
+    time.sleep(self.boltGraceSeconds)
     self.turnOffServos()
 
   def boltForward(self):
     print("moving bolt forward")
-    # self.rightServo.angle = 0
-    # self.leftServo.angle = 180
     self.setServoDutyPerc(12.8, 2.8)
-    time.sleep(0.7)
+    time.sleep(self.boltGraceSeconds)
     self.turnOffServos()
 
   def motorsUp(self):
@@ -111,7 +121,7 @@ class MotorController:
       return
     self.motorsUp()
     self.boltBack()
-    time.sleep(2.4)
+    time.sleep(self.sleepSeconds)
     self.boltForward()
     time.sleep(1)
     self.resetState()
@@ -120,12 +130,12 @@ class MotorController:
     print("shooting all")
     if not self.hasCapacity():
       return
-    self.motorsDown()
+    self.motorsUp()
     self.boltBack()
-    time.sleep(2)
+    time.sleep(self.sleepSeconds)
 
     while self.hasCapacity():
-      time.sleep(1)
+      time.sleep(self.shootAllGapSeconds)
       self.boltForward()
       self.boltBack()
     self.resetState()
@@ -134,5 +144,5 @@ class MotorController:
     print("fake shooting sequence")
     self.boltBack()
     self.motorsUp()
-    time.sleep(3)
+    time.sleep(self.fakeShotSeconds)
     self.resetState()
