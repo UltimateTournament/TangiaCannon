@@ -76,16 +76,12 @@ class MotorController:
 
   def boltBack(self):
     print("moving bolt back")
-    # self.rightServo.angle = 170
-    # self.leftServo.angle = 10
     self.setServoDutyPerc(3.3, 13)
     time.sleep(self.boltGraceSeconds)
     self.turnOffServos()
 
   def boltForward(self):
     print("moving bolt forward")
-    # self.rightServo.angle = 0
-    # self.leftServo.angle = 180
     self.setServoDutyPerc(12.8, 2.8)
     time.sleep(self.boltGraceSeconds)
     self.turnOffServos()
