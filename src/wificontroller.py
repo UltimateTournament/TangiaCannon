@@ -1,4 +1,4 @@
-import ipaddress, ssl, wifi, socketpool, adafruit_requests, os, gc, json
+import ipaddress, ssl, wifi, socketpool, adafruit_requests, os, gc
 
 class WiFiController:
   def __init__(self) -> None:
