@@ -37,7 +37,7 @@ class WiFiController:
     if response.status_code == 204:
       print("got nothing")
     else:
-      resJSON = response.json()
+      return response.json()
     gc.collect()
 
   def ackInteraction(self, aeID):
