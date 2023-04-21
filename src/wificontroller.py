@@ -1,6 +1,10 @@
 import ipaddress, ssl, wifi, socketpool, adafruit_requests, os, gc
 
 class WiFiController:
+  InstructionLaunchOne = "launch_one"
+  InstructionLaunchAll = "launch_all"
+  InstructionLaunchFake = "launch_fake"
+
   def __init__(self) -> None:
     for network in wifi.radio.start_scanning_networks():
       print("\t%s\t\tRSSI: %d\tChannel: %d" % (str(network.ssid, "utf-8"),
