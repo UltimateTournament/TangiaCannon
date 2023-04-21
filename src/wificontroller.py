@@ -13,7 +13,7 @@ class WiFiController:
     print("My IP address is", wifi.radio.ipv4_address)
 
     self.ipv4 = ipaddress.ip_address("8.8.4.4")
-    print("Ping google.com: %f ms" % (wifi.radio.ping(ipv4)*1000))
+    print("Ping google.com: %f ms" % (wifi.radio.ping(self.ipv4)*1000))
 
     self.pool = socketpool.SocketPool(wifi.radio)
     self.requests = adafruit_requests.Session(self.pool, ssl.create_default_context())
