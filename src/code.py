@@ -1,9 +1,10 @@
 import wificontroller, motorcontroller, gc
+from time import sleep
 
 wifiController = None
 motorController = None
 
-if __name__ == "main":
+def main():
     print("starting wifi controller")
     wifiController = wificontroller.WiFiController()
     print("starting motor controller")
@@ -27,3 +28,7 @@ if __name__ == "main":
                 print("Unknown instruction", instruction)
             wifiController.ackInteraction(executionID)
         gc.collect()
+        sleep(2)
+
+if __name__ == "main":
+    main()

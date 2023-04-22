@@ -2,4 +2,4 @@
 Enable the data serial port
 """
 import usb_cdc
-usb_cdc.enable(console=True, data=True)
+usb_cdc.enable(console=True, data=False)

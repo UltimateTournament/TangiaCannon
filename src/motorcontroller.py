@@ -18,14 +18,14 @@ boardToPins = {
     "capSensPin": board.D12,
     "motorEnablePin": board.D11
   },
-  "raspberry_pi_pico": {
-    "rightServoPin": board.GP21,
-    "leftServoPin": board.GP20,
-    "leftMotorPin": board.GP19,
-    "rightMotorPin": board.GP18,
-    "capSensPin": board.GP17,
-    "motorEnablePin": board.GP16
-  }
+  # "raspberry_pi_pico": { # import issues with the pin not existing on other board, need to make each board imported
+  #   "rightServoPin": board.GP21,
+  #   "leftServoPin": board.GP20,
+  #   "leftMotorPin": board.GP19,
+  #   "rightMotorPin": board.GP18,
+  #   "capSensPin": board.GP17,
+  #   "motorEnablePin": board.GP16
+  # }
 }
 
 def percToDutyCycle(perc):

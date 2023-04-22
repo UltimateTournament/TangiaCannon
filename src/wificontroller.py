@@ -40,9 +40,12 @@ class WiFiController:
     response = self.requests.get(url, headers={"Authorization": "Bearer {}".format(self.token)})
     if response.status_code == 204:
       print("got nothing")
+      return None
+    elif response.status_code > 299:
+      print("got high status code", response.status_code, response.text)
+      return None
     else:
       return response.json()
-    gc.collect()
 
   def ackInteraction(self, aeID):
     url = self.api + "/v2/actions/ack/{}".format(aeID)
