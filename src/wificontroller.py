@@ -39,7 +39,7 @@ class WiFiController:
     print("Polling interactions from", url)
     response = self.requests.get(url, headers={"Authorization": "Bearer {}".format(self.token)})
     if response.status_code == 204:
-      print("got nothing")
+      print("204, no interactions")
       return None
     elif response.status_code > 299:
       print("got high status code", response.status_code, response.text)
