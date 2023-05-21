@@ -13,9 +13,9 @@ boardToPins = {
   "adafruit_feather_esp32s2": {
     "rightServoPin": board.D5,
     "leftServoPin": board.D6,
-    "leftMotorPin": board.D9,
-    "rightMotorPin": board.D10,
-    "capSensPin": board.D12,
+    "leftMotorPin": board.D13,
+    "rightMotorPin": board.D12,
+    "capSensPin": board.D9,
     "motorEnablePin": board.D11
   },
   # "raspberry_pi_pico": { # import issues with the pin not existing on other board, need to make each board imported
