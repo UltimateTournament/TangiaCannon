@@ -30,5 +30,4 @@ def main():
         gc.collect()
         sleep(2)
 
-if __name__ == "main":
-    main()
+main()
