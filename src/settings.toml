@@ -1,2 +1,4 @@
-CIRCUITPY_WIFI_SSID = "your-wifi-ssid-here"
-CIRCUITPY_WIFI_PASSWORD = "your-wifi-password-here"
+CIRCUITPY_WIFI_SSID = "Dan’s Google Network"
+CIRCUITPY_WIFI_PASSWORD = "xxx"
+TANGIA_TOKEN="xxx"
+TANGIA_API="https://api.tangia.co"
