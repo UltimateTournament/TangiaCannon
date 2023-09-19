@@ -128,8 +128,13 @@ class MotorController:
 
   def ShootAllSequence(self):
     print("shooting all")
+    self.motorsUp()
     for _ in range(6):
-      self.ShootSingleSequence()
+      self.boltBack()
+      time.sleep(self.sleepSeconds)
+      self.boltForward()
+    time.sleep(1)
+    self.resetState()
 
     while self.hasCapacity():
       time.sleep(self.shootAllGapSeconds)
