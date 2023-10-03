@@ -136,12 +136,6 @@ class MotorController:
     time.sleep(1)
     self.resetState()
 
-    while self.hasCapacity():
-      time.sleep(self.shootAllGapSeconds)
-      self.boltForward()
-      self.boltBack()
-    self.resetState()
-
   def FakeShootSequence(self):
     print("fake shooting sequence")
     self.boltBack()
